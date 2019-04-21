@@ -16,6 +16,13 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QPushButton" name="rescanBut">
+      <property name="text">
+       <string>Rescan</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QTabWidget" name="labTabs">
       <property name="currentIndex">
        <number>0</number>
