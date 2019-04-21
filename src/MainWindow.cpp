@@ -1,11 +1,12 @@
 #include "MainWindow.h"
 
+#include "common/LabRootWidget.h"
+#include "common/LabPluginBase.h"
+
 #include <qDebug>
 #include <QDirIterator>
 #include <QTabBar>
 #include <QPluginLoader>
-
-#include "labs/lab3/Lab3Plugin.h"
 
 MainWindow::MainWindow() {
     setupUi(this);
@@ -14,10 +15,11 @@ MainWindow::MainWindow() {
     show();
 }
 
+MainWindow::~MainWindow() = default;
+
 void MainWindow::rescanPlugins() {
-    while (labTabs->count() > 0) {
-        labTabs->removeTab(labTabs->count() - 1);  // TODO: delete tab after remove?
-    }
+    labRoots.clear();
+    labTabs->clear();
     QDirIterator it("labs");
     while (it.hasNext()) {
         QString labName = it.next();
@@ -27,7 +29,8 @@ void MainWindow::rescanPlugins() {
         QPluginLoader loader(labName);
         if (auto instance = loader.instance()) {
             if (auto plugin = qobject_cast<LabPluginBase *>(instance)) {
-                labTabs->addTab(new QWidget(), plugin->tabTitle());
+                labRoots.push_back(plugin->createRoot());
+                labTabs->addTab(labRoots.back().get(), plugin->tabTitle());
             } else {
                 qDebug() << "qobject_cast<> returned nullptr";
             }

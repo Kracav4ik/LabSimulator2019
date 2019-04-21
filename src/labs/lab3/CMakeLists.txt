@@ -9,4 +9,4 @@ set(LAB_SOURCES
 )
 
 add_library(${LAB_NAME} SHARED ${LAB_SOURCES})
-target_link_libraries(${LAB_NAME} PRIVATE ${QT_LIBS})
+target_link_libraries(${LAB_NAME} PRIVATE ${QT_LIBS} ${COMMON_NAME})

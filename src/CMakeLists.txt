@@ -22,10 +22,10 @@ set(EXE_SOURCES
         main.cpp
         MainWindow.cpp
         MainWindow.h
-        common/LabPluginBase.h
 )
 
+add_subdirectory(common)
 add_subdirectory(labs)
 
 add_executable(${EXE_NAME} ${EXE_SOURCES})
-target_link_libraries(${EXE_NAME} ${QT_LIBS})
+target_link_libraries(${EXE_NAME} ${QT_LIBS} ${COMMON_NAME})

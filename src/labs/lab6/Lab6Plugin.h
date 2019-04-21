@@ -9,4 +9,5 @@ Q_INTERFACES(LabPluginBase)
 
 public:
     QString tabTitle() const override;
+    std::unique_ptr<LabRootWidget> createRoot() const override;
 };
