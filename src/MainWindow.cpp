@@ -15,7 +15,9 @@ MainWindow::MainWindow() {
 }
 
 void MainWindow::rescanPlugins() {
-    labTabs->clear();
+    while (labTabs->count() > 0) {
+        labTabs->removeTab(labTabs->count() - 1);  // TODO: delete tab after remove?
+    }
     QDirIterator it("labs");
     while (it.hasNext()) {
         QString labName = it.next();
@@ -25,12 +27,15 @@ void MainWindow::rescanPlugins() {
         QPluginLoader loader(labName);
         if (auto instance = loader.instance()) {
             if (auto plugin = qobject_cast<LabPluginBase *>(instance)) {
-                labTabs->tabBar()->addTab(plugin->tabTitle());
+                labTabs->addTab(new QWidget(), plugin->tabTitle());
             } else {
                 qDebug() << "qobject_cast<> returned nullptr";
             }
         } else {
             qDebug() << loader.errorString();
         }
+    }
+    if (labTabs->count() == 0) {
+        labTabs->addTab(emptyTab, "No labs");
     }
 }
