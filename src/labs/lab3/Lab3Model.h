@@ -1,19 +1,22 @@
 #pragma once
 
 #include <QList>
-#include <QPointF>
+#include <QPoint>
 #include <QObject>
 
 class Lab3Model : public QObject {
 Q_OBJECT
 private:
-    // TODO: remove hardcode
-    QList<QPointF> _measurements = {{150, 150}, {-150, 150}, {150, -150}, {-150, -150}};
-    QPointF _nextMeasurement = {150, 0};
+    QList<QPoint> _measurements;
+    QPoint _nextMeasurement;
 
 public:
-    const QList<QPointF>& measurements() const;
-    QPointF nextMeasurement() const;
+    const QList<QPoint>& measurements() const;
+    QPoint nextMeasurement() const;
+
+public slots:
+    void mouseMoved(const QPoint& p);
+    void mousePressed();
 
 signals:
     void modelChanged();

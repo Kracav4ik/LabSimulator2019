@@ -8,5 +8,6 @@ Lab3RootWidget::Lab3RootWidget()
     , view(&scene, &model)
 {
     setupUi(this);
+    labInstallment->setMouseTracking(true);
     labInstallment->setScene(&scene);
 }

@@ -9,6 +9,8 @@
 void Lab3View::setModel(Lab3Model *model) {
     _model = model;
     connect(_model, &Lab3Model::modelChanged, this, &Lab3View::modelChange);
+    connect(&grid, &Grid::mouseMove, _model, &Lab3Model::mouseMoved);
+    connect(&grid, &Grid::mousePress, _model, &Lab3Model::mousePressed);
     modelChange();
 }
 
@@ -17,24 +19,15 @@ Lab3View::Lab3View(QGraphicsScene *scene, Lab3Model* model) : _scene(scene), _mo
 }
 
 void Lab3View::modelChange() {
+    _scene->removeItem(&grid);
     _scene->clear();
-    int pxCount = 6;
-    int gridSize = 50;
+    _scene->addItem(&grid);
+
+    grid.grabMouse();
+    int pxCount = grid.getPxPerMm();
     int dipoleRadius = pxCount * 30;
-    QPen gridPen({255, 196, 255});
     QRect roundRect(-dipoleRadius / 2, -dipoleRadius / 2, dipoleRadius, dipoleRadius);
     QColor roundColor(0, 255, 255);
-    for (int i = -gridSize; i <= gridSize; ++i) {
-        if (i % 10 == 0) {
-            gridPen.setWidth(3);
-        } else if (i % 5 == 0) {
-            gridPen.setWidth(2);
-        } else {
-            gridPen.setWidth(1);
-        }
-        _scene->addLine(pxCount * i, -gridSize * pxCount, pxCount * i, gridSize * pxCount, gridPen);
-        _scene->addLine(-gridSize * pxCount, pxCount * i, gridSize * pxCount, pxCount * i, gridPen);
-    }
     _scene->addEllipse(roundRect, roundColor, roundColor);
 
     QPointF measurementRadius(pxCount * 2, pxCount * 2);
@@ -42,7 +35,7 @@ void Lab3View::modelChange() {
     for (int i = 0; i < _model->measurements().size(); ++i) {
         QPointF measurement = _model->measurements()[i];
         _scene->addEllipse(rectRad.translated(measurement), QColor(255, 255, 0), QColor(255, 255, 0));
-        QGraphicsTextItem* text = _scene->addText(QString("%1").arg(i + 10));
+        QGraphicsTextItem* text = _scene->addText(QString("%1").arg(i + 1));
         text->setPos(measurement - text->boundingRect().center());
     }
     _scene->addEllipse(rectRad.translated(_model->nextMeasurement()), QColor(0, 255, 0), QColor(0, 255, 0));
