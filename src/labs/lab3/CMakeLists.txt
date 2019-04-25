@@ -8,6 +8,10 @@ set(LAB_SOURCES
         Lab3Plugin.cpp
         Lab3RootWidget.cpp
         Lab3RootWidget.h
+        Ldb3Model.cpp
+        Ldb3Model.h
+        Ldb3View.cpp
+        Ldb3View.h
 )
 
 add_library(${LAB_NAME} SHARED ${LAB_SOURCES})
