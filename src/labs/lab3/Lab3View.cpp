@@ -1,22 +1,22 @@
-#include "Ldb3View.h"
+#include "Lab3View.h"
 
-#include "Ldb3Model.h"
+#include "Lab3Model.h"
 
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 
-void Ldb3View::setModel(Ldb3Model *model) {
+void Lab3View::setModel(Lab3Model *model) {
     _model = model;
-    connect(_model, &Ldb3Model::modelChanged, this, &Ldb3View::modelChange);
+    connect(_model, &Lab3Model::modelChanged, this, &Lab3View::modelChange);
     modelChange();
 }
 
-Ldb3View::Ldb3View(QGraphicsScene *scene, Ldb3Model* model) : _scene(scene), _model(nullptr) {
+Lab3View::Lab3View(QGraphicsScene *scene, Lab3Model* model) : _scene(scene), _model(nullptr) {
     setModel(model);
 }
 
-void Ldb3View::modelChange() {
+void Lab3View::modelChange() {
     _scene->clear();
     int pxCount = 6;
     int gridSize = 50;

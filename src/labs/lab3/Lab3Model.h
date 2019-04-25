@@ -4,7 +4,7 @@
 #include <QPointF>
 #include <QObject>
 
-class Ldb3Model : public QObject {
+class Lab3Model : public QObject {
 Q_OBJECT
 private:
     // TODO: remove hardcode
