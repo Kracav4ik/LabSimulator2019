@@ -14,6 +14,7 @@ void Lab3View::setModel(Lab3Model *model) {
     connect(&grid, &Grid::mousePress, _model, &Lab3Model::mousePressed);
     connect(&grid, &Grid::mouseDragStart, this, &Lab3View::mouseDragBegin);
     connect(&grid, &Grid::mouseDragStop, this, &Lab3View::mouseDragEnd);
+    connect(&grid, &Grid::wheelMove, this, &Lab3View::wheelMoved);
     modelChange();
 }
 

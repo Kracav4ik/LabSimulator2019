@@ -5,9 +5,9 @@
 #include <QDebug>
 
 const int HALF_CM = 5;
+const double SCALE_FACTOR  = 1.15;
 
 QRectF Grid::boundingRect() const {
-    QPointF bb(size * pxPerMm, size * pxPerMm);
     return QRectF(-bb, bb);
 }
 
@@ -52,5 +52,13 @@ void Grid::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 void Grid::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() & Qt::LeftButton) {
         emit mouseDragStop();
+    }
+}
+
+void Grid::wheelEvent(QGraphicsSceneWheelEvent *event) {
+    if (event->delta() > 0) {
+        emit wheelMove(SCALE_FACTOR);
+    } else {
+        emit wheelMove(1 / SCALE_FACTOR);
     }
 }

@@ -24,6 +24,7 @@ private slots:
 signals:
     void mouseDragBegin();
     void mouseDragEnd();
+    void wheelMoved(double sc);
 };
 
 
