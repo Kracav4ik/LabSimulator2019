@@ -15,11 +15,15 @@ private:
     QGraphicsScene* _scene;
 
 public:
-    explicit Lab3View(QGraphicsScene* scene, Lab3Model* model);
+    Lab3View(QGraphicsScene* scene, Lab3Model* model);
     void setModel(Lab3Model* model);
 
 private slots:
     void modelChange();
+
+signals:
+    void mouseDragBegin();
+    void mouseDragEnd();
 };
 
 

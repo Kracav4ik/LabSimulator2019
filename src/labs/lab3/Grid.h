@@ -20,8 +20,11 @@ public:
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 signals:
     void mouseMove(const QPoint& p);
+    void mouseDragStart();
+    void mouseDragStop();
     void mousePress();
 };

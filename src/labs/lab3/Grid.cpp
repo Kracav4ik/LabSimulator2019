@@ -41,7 +41,16 @@ QPoint Grid::toGridCoord(const QPointF& pos) const {
 }
 
 void Grid::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if (event->button() & Qt::LeftButton) {
+    if (event->button() & Qt::RightButton) {
         emit mousePress();
+    }
+    if (event->button() & Qt::LeftButton) {
+        emit mouseDragStart();
+    }
+}
+
+void Grid::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    if (event->button() & Qt::LeftButton) {
+        emit mouseDragStop();
     }
 }

@@ -14,6 +14,10 @@ private:
 
 public:
     Lab3RootWidget();
+
+public slots:
+    void dragMousePress();
+    void dragMouseRelease();
 };
 
 
