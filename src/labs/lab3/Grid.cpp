@@ -7,19 +7,18 @@
 const int HALF_CM = 5;
 
 QRectF Grid::boundingRect() const {
-    return QRectF(0, 0, size * pxPerMm, size * pxPerMm);
+    QPointF bb(size * pxPerMm, size * pxPerMm);
+    return QRectF(-bb, bb);
 }
 
 void Grid::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     for (int i = -size; i <= size; ++i) {
         if (i % (HALF_CM * 2) == 0) {
             gridPen.setWidth(3);
+        } else if (i % HALF_CM == 0) {
+            gridPen.setWidth(2);
         } else {
-            if (i % HALF_CM == 0) {
-                gridPen.setWidth(2);
-            } else {
-                gridPen.setWidth(1);
-            }
+            gridPen.setWidth(1);
         }
         painter->setPen(gridPen);
         painter->drawLine(pxPerMm * i, -size * pxPerMm, pxPerMm * i, size * pxPerMm);
