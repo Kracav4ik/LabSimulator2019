@@ -20,6 +20,7 @@ Lab3RootWidget::Lab3RootWidget()
     connect(&view, &Lab3View::wheelMoved, this, &Lab3RootWidget::zoom);
     connect(undoButton, &QPushButton::clicked, this, &Lab3RootWidget::undo);
     connect(redoButton, &QPushButton::clicked, this, &Lab3RootWidget::redo);
+    connect(resetButton, &QPushButton::clicked, this, &Lab3RootWidget::reset);
     connect(&undoStack, &QUndoStack::canUndoChanged, undoButton, &QPushButton::setEnabled);
     connect(&undoStack, &QUndoStack::canRedoChanged, redoButton, &QPushButton::setEnabled);
     undoButton->setEnabled(undoStack.canUndo());
@@ -63,4 +64,9 @@ void Lab3RootWidget::undo() {
 
 void Lab3RootWidget::redo() {
     undoStack.redo();
+}
+
+void Lab3RootWidget::reset() {
+    undoStack.clear();
+    model.clear();
 }

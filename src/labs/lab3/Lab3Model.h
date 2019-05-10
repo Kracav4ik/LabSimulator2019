@@ -17,6 +17,7 @@ public:
     void addNextMeasurement(const QPoint& nextMeasurement);
     void removeLastMeasurement();
     bool canAddNextMeasurement() const;
+    void clear();
 
 public slots:
     void setNextMeasurement(const QPoint& nextMeasurement);

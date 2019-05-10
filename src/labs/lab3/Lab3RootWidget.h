@@ -26,6 +26,7 @@ public slots:
     void dragMousePress();
     void dragMouseRelease();
     void zoom(double sc);
+    void reset();
 };
 
 

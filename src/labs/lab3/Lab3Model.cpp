@@ -31,3 +31,8 @@ void Lab3Model::removeLastMeasurement() {
     _measurements.removeLast();
     emit modelChanged();
 }
+
+void Lab3Model::clear() {
+    _measurements.clear();
+    emit modelChanged();
+}
