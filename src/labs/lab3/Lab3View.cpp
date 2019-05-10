@@ -32,15 +32,17 @@ void Lab3View::modelChange() {
     int dipoleRadius = pxCount * 30;
     QRect roundRect(-dipoleRadius / 2, -dipoleRadius / 2, dipoleRadius, dipoleRadius);
     QColor roundColor(0, 255, 255);
+    QColor measurementsColor = QColor(255, 255, 0);
+    QColor nextMeasurementColor = QColor(0, 255, 0);
     _scene->addEllipse(roundRect, roundColor, roundColor);
 
     QPointF measurementRadius(pxCount * 2, pxCount * 2);
     QRectF rectRad(-measurementRadius / 2, measurementRadius / 2);
     for (int i = 0; i < _model->measurements().size(); ++i) {
         QPointF measurement = _model->measurements()[i];
-        _scene->addEllipse(rectRad.translated(measurement), QColor(255, 255, 0), QColor(255, 255, 0));
+        _scene->addEllipse(rectRad.translated(measurement), measurementsColor, measurementsColor);
         QGraphicsTextItem* text = _scene->addText(QString("%1").arg(i + 1));
         text->setPos(measurement - text->boundingRect().center());
     }
-    _scene->addEllipse(rectRad.translated(_model->nextMeasurement()), QColor(0, 255, 0), QColor(0, 255, 0));
+    _scene->addEllipse(rectRad.translated(_model->nextMeasurement()), nextMeasurementColor, nextMeasurementColor);
 }
