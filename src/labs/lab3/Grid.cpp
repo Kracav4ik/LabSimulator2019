@@ -5,25 +5,30 @@
 #include <QDebug>
 
 const int HALF_CM = 5;
-const double SCALE_FACTOR  = 1.15;
+const double SCALE_FACTOR  = 1.25;
 
 QRectF Grid::boundingRect() const {
     return QRectF(-bb, bb);
 }
 
 void Grid::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    for (int i = -size; i <= size; ++i) {
-        if (i % (HALF_CM * 2) == 0) {
-            gridPen.setWidth(3);
-        } else if (i % HALF_CM == 0) {
-            gridPen.setWidth(2);
-        } else {
-            gridPen.setWidth(1);
+    QColor baseColor = gridPen.color();
+    struct Lines {
+        int offset;
+        int width;
+        QColor darker;
+    };
+    auto listOfLines = {Lines{1, 1, baseColor}, Lines{HALF_CM, 2, baseColor.darker(115)}, Lines{HALF_CM * 2, 3, baseColor.darker(130)}};
+    for (Lines lines : listOfLines) {
+        for (int i = -size; i <= size; i += lines.offset) {
+            gridPen.setWidth(lines.width);
+            gridPen.setColor(lines.darker);
+            painter->setPen(gridPen);
+            painter->drawLine(pxPerMm * i, -size * pxPerMm, pxPerMm * i, size * pxPerMm);
+            painter->drawLine(-size * pxPerMm, pxPerMm * i, size * pxPerMm, pxPerMm * i);
         }
-        painter->setPen(gridPen);
-        painter->drawLine(pxPerMm * i, -size * pxPerMm, pxPerMm * i, size * pxPerMm);
-        painter->drawLine(-size * pxPerMm, pxPerMm * i, size * pxPerMm, pxPerMm * i);
     }
+    gridPen.setColor(baseColor);
 }
 
 int Grid::getPxPerMm() const {
