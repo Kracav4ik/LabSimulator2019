@@ -10,8 +10,8 @@ void Lab3View::setModel(Lab3Model *model) {
     _model = model;
     _scene->addItem(&grid);
     connect(_model, &Lab3Model::modelChanged, this, &Lab3View::modelChange);
-    connect(&grid, &Grid::mouseMove, _model, &Lab3Model::mouseMoved);
-    connect(&grid, &Grid::mousePress, _model, &Lab3Model::mousePressed);
+    connect(&grid, &Grid::mouseMove, _model, &Lab3Model::setNextMeasurement);
+    connect(&grid, &Grid::mousePress, this, &Lab3View::mousePressed);
     connect(&grid, &Grid::mouseDragStart, this, &Lab3View::mouseDragBegin);
     connect(&grid, &Grid::mouseDragStop, this, &Lab3View::mouseDragEnd);
     connect(&grid, &Grid::wheelMove, this, &Lab3View::wheelMoved);

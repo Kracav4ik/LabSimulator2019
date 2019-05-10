@@ -28,7 +28,7 @@
      <property name="childrenCollapsible">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget_2">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label">
@@ -58,7 +58,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label_2">
@@ -117,14 +117,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="undo">
+       <widget class="QPushButton" name="undoButton">
         <property name="text">
          <string>Undo</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="redo">
+       <widget class="QPushButton" name="redoButton">
         <property name="text">
          <string>Redo</string>
         </property>

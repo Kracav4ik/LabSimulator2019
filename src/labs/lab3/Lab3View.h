@@ -22,6 +22,7 @@ private slots:
     void modelChange();
 
 signals:
+    void mousePressed();
     void mouseDragBegin();
     void mouseDragEnd();
     void wheelMoved(double sc);

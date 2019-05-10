@@ -14,9 +14,12 @@ public:
     const QList<QPoint>& measurements() const;
     QPoint nextMeasurement() const;
 
+    void addNextMeasurement(const QPoint& nextMeasurement);
+    void removeLastMeasurement();
+    bool canAddNextMeasurement() const;
+
 public slots:
-    void mouseMoved(const QPoint& p);
-    void mousePressed();
+    void setNextMeasurement(const QPoint& nextMeasurement);
 
 signals:
     void modelChanged();

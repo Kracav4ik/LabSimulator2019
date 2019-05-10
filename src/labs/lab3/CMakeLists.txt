@@ -14,6 +14,8 @@ set(LAB_SOURCES
         Lab3View.h
         Grid.cpp
         Grid.h
+        commands/AddMeasurementCommand.cpp
+        commands/AddMeasurementCommand.h
 )
 
 add_library(${LAB_NAME} SHARED ${LAB_SOURCES})
