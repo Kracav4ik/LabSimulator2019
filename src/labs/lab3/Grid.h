@@ -6,7 +6,7 @@
 class Grid : public QObject, public QGraphicsItem {
 Q_OBJECT
 private:
-    const int size = 50;
+    const int size = 150;
     const int pxPerMm = 6;
     QPen gridPen = QColor(255, 196, 255);
     const QPointF bb{(double)size * pxPerMm, (double)size * pxPerMm};
