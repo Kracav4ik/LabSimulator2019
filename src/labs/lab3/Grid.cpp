@@ -31,7 +31,10 @@ int Grid::getPxPerMm() const {
 }
 
 void Grid::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
-    emit mouseMove(toGridCoord(event->pos()));
+    QPointF pos = event->pos();
+    if (boundingRect().contains(pos)) {
+        emit mouseMove(toGridCoord(pos));
+    }
 }
 
 QPoint Grid::toGridCoord(const QPointF& pos) const {
