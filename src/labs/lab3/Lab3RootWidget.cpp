@@ -2,13 +2,12 @@
 
 #include "commands/AddMeasurementCommand.h"
 
-#include <QDebug>
-#include <QAction>
 #include <QMouseEvent>
-#include <QFileDialog>
+#include <QTableWidget>
 
 Lab3RootWidget::Lab3RootWidget()
-    : _scene(this)
+    : LabRootWidget({ {50, u8"x (см)"}, {50, u8"y (см)"}, {70, u8"Значение"} })
+    , _scene(this)
     , _view(&_scene, &_model)
 {
     setupUi(this);
@@ -21,23 +20,6 @@ Lab3RootWidget::Lab3RootWidget()
     connect(&_view, &Lab3View::mouseDragBegin, this, &Lab3RootWidget::dragMousePress);
     connect(&_view, &Lab3View::mouseDragEnd, this, &Lab3RootWidget::dragMouseRelease);
     connect(&_view, &Lab3View::wheelMoved, this, &Lab3RootWidget::zoom);
-    struct Column {
-        int number;
-        int width;
-        QString text;
-    };
-
-    auto columns = {
-            Column{0, 50, u8"x (см)"},
-            Column{1, 50, u8"y (см)"},
-            Column{2, 70, u8"Значение"}
-    };
-
-    tableWidget->setColumnCount(columns.size());
-    for (const Column& column : columns) {
-        tableWidget->setHorizontalHeaderItem(column.number, new QTableWidgetItem(column.text));
-        tableWidget->setColumnWidth(column.number, column.width);
-    }
 }
 
 LabModel& Lab3RootWidget::model() {
@@ -81,41 +63,5 @@ void Lab3RootWidget::modelChange() {
             el->setTextAlignment(Qt::AlignCenter);
             tableWidget->setItem(i, j, el);
         }
-    }
-}
-
-
-void Lab3RootWidget::saveToCSV() {
-    QString fileName = QFileDialog::getSaveFileName(this, u8"Сохранить в CSV", "", "*.csv");
-    if (fileName.isEmpty()) {
-        return;
-    }
-
-    QString textData;
-    int rows = tableWidget->rowCount();
-    int columns = tableWidget->columnCount();
-    textData += tableWidget->horizontalHeaderItem(0)->text();
-    for (int k = 1; k < columns; ++k) {
-        textData += "," + tableWidget->horizontalHeaderItem(k)->text();
-    }
-    textData += "\n";
-
-    for (int i = 0; i < rows; i++) {
-        textData += tableWidget->item(i, 0)->text();
-        for (int j = 1; j < columns; j++) {
-            textData += "," + tableWidget->item(i, j)->text();
-        }
-        textData += "\n";
-    }
-
-    if (!fileName.toLower().endsWith(".csv")) {
-        fileName += ".csv";
-    }
-
-    QFile csvFile(fileName);
-    if(csvFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        QTextStream out(&csvFile);
-        out << textData;
-        csvFile.close();
     }
 }

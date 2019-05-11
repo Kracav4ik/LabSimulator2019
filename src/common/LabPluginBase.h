@@ -20,5 +20,5 @@ public:
 // !!!   we MUST INCREMENT iid version after ANY signature change of ANY class/function used in the lab dlls   !!!
 // !!!                                                                                                         !!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#define LabPluginBase_iid "LabPluginBase/v0.1.2"
+#define LabPluginBase_iid "LabPluginBase/v0.2"
 Q_DECLARE_INTERFACE(LabPluginBase, LabPluginBase_iid)

@@ -2,7 +2,6 @@
 
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
-#include <QDebug>
 
 const int HALF_CM = 5;
 const double SCALE_FACTOR = 1.25;
