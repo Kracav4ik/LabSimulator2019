@@ -8,27 +8,19 @@
 #include <QFileDialog>
 
 Lab3RootWidget::Lab3RootWidget()
-    : scene(this)
-    , view(&scene, &model)
+    : _scene(this)
+    , _view(&_scene, &_model)
 {
     setupUi(this);
     labInstallment->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     labInstallment->setMouseTracking(true);
-    labInstallment->setScene(&scene);
+    labInstallment->setScene(&_scene);
     labInstallment->centerOn(0, 0);
-    connect(&model, &Lab3Model::modelChanged, this, &Lab3RootWidget::modelChange);
-    connect(&view, &Lab3View::mousePressed, this, &Lab3RootWidget::viewClicked);
-    connect(&view, &Lab3View::mouseDragBegin, this, &Lab3RootWidget::dragMousePress);
-    connect(&view, &Lab3View::mouseDragEnd, this, &Lab3RootWidget::dragMouseRelease);
-    connect(&view, &Lab3View::wheelMoved, this, &Lab3RootWidget::zoom);
-    connect(undoButton, &QPushButton::clicked, this, &Lab3RootWidget::undo);
-    connect(redoButton, &QPushButton::clicked, this, &Lab3RootWidget::redo);
-    connect(resetButton, &QPushButton::clicked, this, &Lab3RootWidget::reset);
-    connect(saveCSV, &QPushButton::clicked, this, &Lab3RootWidget::saveToCSV);
-    connect(&undoStack, &QUndoStack::canUndoChanged, undoButton, &QPushButton::setEnabled);
-    connect(&undoStack, &QUndoStack::canRedoChanged, redoButton, &QPushButton::setEnabled);
-    undoButton->setEnabled(undoStack.canUndo());
-    redoButton->setEnabled(undoStack.canRedo());
+    connect(&_model, &LabModel::modelChanged, this, &Lab3RootWidget::modelChange);
+    connect(&_view, &Lab3View::mousePressed, this, &Lab3RootWidget::viewClicked);
+    connect(&_view, &Lab3View::mouseDragBegin, this, &Lab3RootWidget::dragMousePress);
+    connect(&_view, &Lab3View::mouseDragEnd, this, &Lab3RootWidget::dragMouseRelease);
+    connect(&_view, &Lab3View::wheelMoved, this, &Lab3RootWidget::zoom);
     struct Column {
         int number;
         int width;
@@ -46,6 +38,10 @@ Lab3RootWidget::Lab3RootWidget()
         tableWidget->setHorizontalHeaderItem(column.number, new QTableWidgetItem(column.text));
         tableWidget->setColumnWidth(column.number, column.width);
     }
+}
+
+LabModel& Lab3RootWidget::model() {
+    return _model;
 }
 
 void Lab3RootWidget::dragMousePress() {
@@ -66,19 +62,19 @@ void Lab3RootWidget::zoom(double sc) {
 }
 
 void Lab3RootWidget::viewClicked() {
-    if (model.canAddNextMeasurement()) {
-        undoStack.push(new AddMeasurementCommand(model));
+    if (_model.canAddNextMeasurement()) {
+        _undoStack.push(new AddMeasurementCommand(_model));
     }
 }
 
 void Lab3RootWidget::modelChange() {
-    const QList<QPoint>& measurements = model.measurements();
+    const QList<QPoint>& measurements = _model.measurements();
     tableWidget->setRowCount(measurements.size());
     for (int i = 0; i < measurements.size(); ++i) {
         QVector<float> measurement = {
             measurements[i].x() / 10.f,
             measurements[i].y() / 10.f,
-            model.calculateMeasurement(measurements[i]),
+            _model.calculateMeasurement(measurements[i]),
         };
         for (int j = 0; j < measurement.size(); ++j) {
             QTableWidgetItem* el = new QTableWidgetItem(QString("%1").arg(measurement[j]));
@@ -122,25 +118,4 @@ void Lab3RootWidget::saveToCSV() {
         out << textData;
         csvFile.close();
     }
-}
-
-bool Lab3RootWidget::canUndo() {
-    return undoStack.canUndo();
-}
-
-bool Lab3RootWidget::canRedo() {
-    return undoStack.canRedo();
-}
-
-void Lab3RootWidget::undo() {
-    undoStack.undo();
-}
-
-void Lab3RootWidget::redo() {
-    undoStack.redo();
-}
-
-void Lab3RootWidget::reset() {
-    undoStack.clear();
-    model.clear();
 }

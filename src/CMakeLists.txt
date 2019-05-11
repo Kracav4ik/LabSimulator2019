@@ -22,6 +22,8 @@ set(EXE_SOURCES
         main.cpp
         MainWindow.cpp
         MainWindow.h
+        LabContainer.cpp
+        LabContainer.h
 )
 
 add_subdirectory(common)

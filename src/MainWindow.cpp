@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 
+#include "LabContainer.h"
 #include "common/LabRootWidget.h"
 #include "common/LabPluginBase.h"
 
@@ -30,7 +31,7 @@ void MainWindow::rescanPlugins() {
         if (auto instance = loader.instance()) {
             if (auto plugin = qobject_cast<LabPluginBase *>(instance)) {
                 labRoots.push_back(plugin->createRoot());
-                labTabs->addTab(labRoots.back().get(), plugin->tabTitle());
+                labTabs->addTab(new LabContainer(labRoots.back().get()), plugin->tabTitle());
             } else {
                 qDebug() << "qobject_cast<> returned nullptr";
             }

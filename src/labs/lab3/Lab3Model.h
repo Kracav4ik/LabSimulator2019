@@ -1,10 +1,11 @@
 #pragma once
 
+#include "common/LabModel.h"
+
 #include <QList>
 #include <QPoint>
-#include <QObject>
 
-class Lab3Model : public QObject {
+class Lab3Model : public LabModel {
 Q_OBJECT
 private:
     int _dipoleRadius;
@@ -24,11 +25,8 @@ public:
     void addNextMeasurement(const QPoint& nextMeasurement);
     void removeLastMeasurement();
     bool canAddNextMeasurement() const;
-    void clear();
+    void clear() override;
 
 public slots:
     void setNextMeasurement(const QPoint& nextMeasurement);
-
-signals:
-    void modelChanged();
 };

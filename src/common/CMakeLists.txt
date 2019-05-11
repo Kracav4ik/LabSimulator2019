@@ -6,10 +6,14 @@ set(QT_LIBS
         Qt5::Widgets
 )
 
+add_compile_definitions(BUILDING_COMMON_DLL)
 set(COMMON_SOURCES
         LabPluginBase.h
         LabRootWidget.h
         LabRootWidget.cpp
+        LabModel.cpp
+        LabModel.h
+        symbols_export.h
 )
 
 add_library(${COMMON_NAME} SHARED ${COMMON_SOURCES})
