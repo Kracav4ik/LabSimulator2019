@@ -7,6 +7,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
 # Find the QtWidgets library
 find_package(Qt5Core REQUIRED)
@@ -29,5 +30,7 @@ set(EXE_SOURCES
 add_subdirectory(common)
 add_subdirectory(labs)
 
-add_executable(${EXE_NAME} ${EXE_SOURCES})
+qt5_add_resources(EXE_RESOURCES main.qrc)
+
+add_executable(${EXE_NAME} ${EXE_SOURCES} ${EXE_RESOURCES})
 target_link_libraries(${EXE_NAME} ${QT_LIBS} ${COMMON_NAME})
