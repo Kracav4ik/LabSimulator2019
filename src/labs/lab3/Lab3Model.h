@@ -16,6 +16,7 @@ public:
     Lab3Model();
     int distance() const;
     int dipoleRadius() const;
+    float calculateMeasurement(const QPoint& p) const;
 
     const QList<QPoint>& measurements() const;
     const QPoint& nextMeasurement() const;
