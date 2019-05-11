@@ -14,6 +14,7 @@ Lab3RootWidget::Lab3RootWidget()
     labInstallment->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     labInstallment->setMouseTracking(true);
     labInstallment->setScene(&scene);
+    labInstallment->centerOn(0, 0);
     connect(&view, &Lab3View::mousePressed, this, &Lab3RootWidget::viewClicked);
     connect(&view, &Lab3View::mouseDragBegin, this, &Lab3RootWidget::dragMousePress);
     connect(&view, &Lab3View::mouseDragEnd, this, &Lab3RootWidget::dragMouseRelease);
