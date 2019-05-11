@@ -26,7 +26,7 @@ protected:
     QTableWidget* tableWidget = nullptr;
 
 public:
-    LabRootWidget(std::vector<TableColumns> tableColumns);
+    explicit LabRootWidget(std::vector<TableColumns> tableColumns);
 
     QUndoStack* undoStack();
     void setTableWidget(QTableWidget* table);
