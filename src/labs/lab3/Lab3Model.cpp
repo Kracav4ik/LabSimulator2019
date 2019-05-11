@@ -62,7 +62,7 @@ bool operator<(const QPoint& p1, const QPoint& p2) {
 float Lab3Model::calculateMeasurement(const QPoint& p) const {
     static QMap<QPoint, float> hashMeasurements;
     if (!hashMeasurements.contains(p)) {
-        int result = qRound(100 * 20.f * std::rand() / RAND_MAX);
+        int result = qRound(100 * 20.f * std::rand() / RAND_MAX);  // TODO: use actual formula
         hashMeasurements[p] = result / 100.f;
     }
     return hashMeasurements[p];
