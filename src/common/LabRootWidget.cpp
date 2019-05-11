@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QTableWidget>
+#include <QTextStream>
 #include <QClipboard>
 #include <QApplication>
 
