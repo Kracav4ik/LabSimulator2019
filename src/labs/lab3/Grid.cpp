@@ -60,7 +60,7 @@ int Grid::getPxPerMm() const {
 void Grid::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     QPointF pos = event->pos();
     if (boundingRect().contains(pos)) {
-        emit mouseMove(snapToGridCoord(pos));
+        emit mouseMove(snapToGridCoord(pos) / PX_PER_MM);
     }
 }
 

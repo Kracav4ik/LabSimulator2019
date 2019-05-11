@@ -41,12 +41,12 @@ void Lab3View::modelChange() {
     QPointF measurementRadius(pxCount, pxCount);
     QRectF measurementBounds(-measurementRadius, measurementRadius);
     for (int i = 0; i < _model->measurements().size(); ++i) {
-        QPointF measurement = _model->measurements()[i];
+        QPointF measurement = _model->measurements()[i] * pxCount;
         _scene->addEllipse(measurementBounds.translated(measurement), measurementsColor, measurementsColor);
         QGraphicsTextItem* text = _scene->addText(QString("%1").arg(i + 1));
         text->setPos(measurement - text->boundingRect().center());
     }
 
     QColor nextMeasurementColor = QColor(0, 255, 0);
-    _scene->addEllipse(measurementBounds.translated(_model->nextMeasurement()), nextMeasurementColor, nextMeasurementColor);
+    _scene->addEllipse(measurementBounds.translated(_model->nextMeasurement() * pxCount), nextMeasurementColor, nextMeasurementColor);
 }
