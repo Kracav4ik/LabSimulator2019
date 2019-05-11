@@ -6,6 +6,10 @@ set(QT_LIBS
 set(LAB_SOURCES
         Lab6Plugin.h
         Lab6Plugin.cpp
+        Lab6RootWidget.cpp
+        Lab6RootWidget.h
+        Lab6Model.cpp
+        Lab6Model.h
 )
 
 add_library(${LAB_NAME} SHARED ${LAB_SOURCES})

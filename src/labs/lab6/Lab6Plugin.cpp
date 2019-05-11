@@ -1,6 +1,6 @@
 #include "Lab6Plugin.h"
 
-#include "common/LabRootWidget.h"
+#include "Lab6RootWidget.h"
 
 #include <QString>
 
@@ -9,5 +9,5 @@ QString Lab6Plugin::tabTitle() const {
 }
 
 std::unique_ptr<LabRootWidget> Lab6Plugin::createRoot() const {
-    return std::make_unique<LabRootWidget>();
+    return std::make_unique<Lab6RootWidget>();
 }
