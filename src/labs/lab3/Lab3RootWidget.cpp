@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QAction>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 Lab3RootWidget::Lab3RootWidget()
     : scene(this)
@@ -23,6 +24,7 @@ Lab3RootWidget::Lab3RootWidget()
     connect(undoButton, &QPushButton::clicked, this, &Lab3RootWidget::undo);
     connect(redoButton, &QPushButton::clicked, this, &Lab3RootWidget::redo);
     connect(resetButton, &QPushButton::clicked, this, &Lab3RootWidget::reset);
+    connect(saveCSV, &QPushButton::clicked, this, &Lab3RootWidget::saveToCSV);
     connect(&undoStack, &QUndoStack::canUndoChanged, undoButton, &QPushButton::setEnabled);
     connect(&undoStack, &QUndoStack::canRedoChanged, redoButton, &QPushButton::setEnabled);
     undoButton->setEnabled(undoStack.canUndo());
@@ -83,6 +85,42 @@ void Lab3RootWidget::modelChange() {
             el->setTextAlignment(Qt::AlignCenter);
             tableWidget->setItem(i, j, el);
         }
+    }
+}
+
+
+void Lab3RootWidget::saveToCSV() {
+    QString fileName = QFileDialog::getSaveFileName(this, u8"Сохранить в CSV", "", "*.csv");
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QString textData;
+    int rows = tableWidget->rowCount();
+    int columns = tableWidget->columnCount();
+    textData += tableWidget->horizontalHeaderItem(0)->text();
+    for (int k = 1; k < columns; ++k) {
+        textData += "," + tableWidget->horizontalHeaderItem(k)->text();
+    }
+    textData += "\n";
+
+    for (int i = 0; i < rows; i++) {
+        textData += tableWidget->item(i, 0)->text();
+        for (int j = 1; j < columns; j++) {
+            textData += "," + tableWidget->item(i, j)->text();
+        }
+        textData += "\n";
+    }
+
+    if (!fileName.toLower().endsWith(".csv")) {
+        fileName += ".csv";
+    }
+
+    QFile csvFile(fileName);
+    if(csvFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QTextStream out(&csvFile);
+        out << textData;
+        csvFile.close();
     }
 }
 

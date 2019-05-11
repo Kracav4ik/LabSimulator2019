@@ -20,6 +20,7 @@ public:
     Lab3RootWidget();
 
 public slots:
+    void saveToCSV();
     void modelChange();
     void viewClicked();
     void undo();
