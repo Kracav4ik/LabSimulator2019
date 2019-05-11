@@ -1,10 +1,11 @@
 #include "Lab3Model.h"
+#include "QRect"
 
 const QList<QPoint>& Lab3Model::measurements() const {
     return _measurements;
 }
 
-QPoint Lab3Model::nextMeasurement() const {
+const QPoint& Lab3Model::nextMeasurement() const {
     return _nextMeasurement;
 }
 
@@ -35,4 +36,17 @@ void Lab3Model::removeLastMeasurement() {
 void Lab3Model::clear() {
     _measurements.clear();
     emit modelChanged();
+}
+
+Lab3Model::Lab3Model()
+    : _dipoleRadius(15)
+    , _distance(210)
+{}
+
+int Lab3Model::distance() const {
+    return _distance;
+}
+
+int Lab3Model::dipoleRadius() const {
+    return _dipoleRadius;
 }

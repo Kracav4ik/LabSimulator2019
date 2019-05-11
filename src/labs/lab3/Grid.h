@@ -6,11 +6,9 @@
 class Grid : public QObject, public QGraphicsItem {
 Q_OBJECT
 private:
-    const int size = 150;
-    const int pxPerMm = 6;
-    QPen gridPen = QColor(255, 196, 255);
-    const QPointF bb{(double)size * pxPerMm, (double)size * pxPerMm};
-    QPoint toGridCoord(const QPointF& pos) const;
+    QPoint snapToGridCoord(const QPointF& pos) const;
+    QRect boundingRectMm() const;
+    void paintLines(QPainter* painter, QPoint p1, QPoint p2, QPoint step, int stepMul, int count) const;
 
 public:
     int getPxPerMm() const;

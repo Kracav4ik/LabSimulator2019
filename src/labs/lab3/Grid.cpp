@@ -5,47 +5,69 @@
 #include <QDebug>
 
 const int HALF_CM = 5;
-const double SCALE_FACTOR  = 1.25;
+const double SCALE_FACTOR = 1.25;
+const int PX_PER_MM = 6;
+const QColor GRID_COLOR(255, 196, 255);
+
+QRect Grid::boundingRectMm() const {
+    return QRect(-100, -100, 410, 200);
+}
 
 QRectF Grid::boundingRect() const {
-    return QRectF(-bb, bb);
+    QRect boundsMm = boundingRectMm();
+    QPoint margin(1, 1);
+    return QRectF((boundsMm.topLeft() - 2*margin) * PX_PER_MM, (boundsMm.bottomRight() + 3*margin) * PX_PER_MM);
+}
+
+void Grid::paintLines(QPainter* painter, QPoint p1, QPoint p2, QPoint step, int stepMul, int count) const {
+    step *= stepMul;
+    for (int i = 0; i <= count; i += stepMul) {
+        painter->drawLine(p1 * PX_PER_MM, p2 * PX_PER_MM);
+        p1 += step;
+        p2 += step;
+    }
 }
 
 void Grid::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    QColor baseColor = gridPen.color();
     struct Lines {
         int offset;
-        int width;
-        QColor darker;
+        qreal width;
+        QColor color;
     };
-    auto listOfLines = {Lines{1, 1, baseColor}, Lines{HALF_CM, 2, baseColor.darker(115)}, Lines{HALF_CM * 2, 3, baseColor.darker(130)}};
-    for (Lines lines : listOfLines) {
-        for (int i = -size; i <= size; i += lines.offset) {
-            gridPen.setWidth(lines.width);
-            gridPen.setColor(lines.darker);
-            painter->setPen(gridPen);
-            painter->drawLine(pxPerMm * i, -size * pxPerMm, pxPerMm * i, size * pxPerMm);
-            painter->drawLine(-size * pxPerMm, pxPerMm * i, size * pxPerMm, pxPerMm * i);
-        }
+    auto listOfLines = {
+            Lines{1, 1, GRID_COLOR},
+            Lines{HALF_CM, 2, GRID_COLOR.darker(115)},
+            Lines{HALF_CM * 2, 3, GRID_COLOR.darker(130)}
+    };
+    QRect boundsMm = boundingRectMm();
+    QPoint dx(1, 0);
+    QPoint dy(0, 1);
+    for (const Lines& lines : listOfLines) {
+        painter->setPen(QPen(lines.color, lines.width));
+        paintLines(painter, boundsMm.topLeft(), boundsMm.bottomLeft() + dy, dx, lines.offset, boundsMm.width());
+        paintLines(painter, boundsMm.topLeft(), boundsMm.topRight() + dx, dy, lines.offset, boundsMm.height());
     }
-    gridPen.setColor(baseColor);
+
+    painter->setPen(QPen(Qt::black, 3));
+    painter->drawLine(boundsMm.left() * PX_PER_MM, 0, boundsMm.right() * PX_PER_MM, 0);
+    painter->drawLine(0, boundsMm.top() * PX_PER_MM, 0, boundsMm.bottom() * PX_PER_MM);
 }
 
 int Grid::getPxPerMm() const {
-    return pxPerMm;
+    return PX_PER_MM;
 }
 
 void Grid::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     QPointF pos = event->pos();
     if (boundingRect().contains(pos)) {
-        emit mouseMove(toGridCoord(pos));
+        emit mouseMove(snapToGridCoord(pos));
     }
 }
 
-QPoint Grid::toGridCoord(const QPointF& pos) const {
-    int cmInPx = HALF_CM * pxPerMm;
+QPoint Grid::snapToGridCoord(const QPointF& pos) const {
+    int cmInPx = HALF_CM * PX_PER_MM;
     QPointF p = pos / cmInPx;
-    return {qRound(p.x()) * cmInPx, qRound(p.y()) * cmInPx};
+    return QPoint(qRound(p.x()) * cmInPx, qRound(p.y()) * cmInPx);
 }
 
 void Grid::mousePressEvent(QGraphicsSceneMouseEvent *event) {
